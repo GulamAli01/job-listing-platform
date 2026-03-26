@@ -45,9 +45,16 @@ const Login = () => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message || "Something went wrong");
-    } finally {
+  console.log(error);
+
+  if (error.response) {
+    toast.error(error.response.data.message);
+  } else if (error.request) {
+    toast.error("Server not responding");
+  } else {
+    toast.error("Something went wrong");
+  }
+} finally {
       dispatch(setLoading(false));
     }
 

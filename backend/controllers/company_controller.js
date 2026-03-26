@@ -7,7 +7,6 @@ export const registerCompany = async (req, res) => {
     try {
         const { companyName } = req.body;
 
-        // validation fix
         if (!companyName) {
             return res.status(400).json({
                 message: "Company name is required",
@@ -15,16 +14,16 @@ export const registerCompany = async (req, res) => {
             });
         }
 
-        let company = await Company.findOne({ name: companyName });
+        const existingCompany = await Company.findOne({ name: companyName });
 
-        if (company) {
+        if (existingCompany) {
             return res.status(400).json({
-                message: "You can't register with same company",
+                message: "Company already exists",
                 success: false,
             });
         }
 
-        company = await Company.create({
+        const company = await Company.create({
             name: companyName,
             userId: req.id,
         });
@@ -36,19 +35,28 @@ export const registerCompany = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({
-            message: "Server error",
+            message: "Internal Server Error",
             success: false,
         });
     }
 };
 
-// GET ALL COMPANIES
+
+// GET ALL COMPANIES (USER BASED)
 export const getCompany = async (req, res) => {
     try {
         const userId = req.id;
-        const companies = await Company.find({ userId });
+
+        if (!userId) {
+            return res.status(401).json({
+                message: "Unauthorized",
+                success: false,
+            });
+        }
+
+        const companies = await Company.find({ userId }).sort({ createdAt: -1 });
 
         return res.status(200).json({
             companies,
@@ -56,13 +64,14 @@ export const getCompany = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({
-            message: "Server error",
+            message: "Internal Server Error",
             success: false,
         });
     }
 };
+
 
 // GET COMPANY BY ID
 export const getCompanyById = async (req, res) => {
@@ -84,31 +93,25 @@ export const getCompanyById = async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({
-            message: "Server error",
+            message: "Internal Server Error",
             success: false,
         });
     }
 };
+
 
 // UPDATE COMPANY
 export const updateCompany = async (req, res) => {
     try {
         const { name, description, website, location } = req.body;
 
-        if (!name) {
-            return res.status(400).json({
-                message: "Company name is required",
-                success: false,
-            });
-        }
-
         const file = req.file;
         let logo;
 
+        // upload logo to cloudinary
         if (file) {
-            // Wrap Cloudinary upload in its own try-catch for better error visibility
             try {
                 const fileUri = getDataUri(file);
                 const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
@@ -144,15 +147,15 @@ export const updateCompany = async (req, res) => {
         }
 
         return res.status(200).json({
-            message: "Company information updated!",
+            message: "Company updated successfully",
             company,
             success: true,
         });
 
     } catch (error) {
-        console.error("updateCompany error:", error); // use console.error
+        console.error(error);
         return res.status(500).json({
-            message: error.message || "Server error", // expose actual error in dev
+            message: "Internal Server Error",
             success: false,
         });
     }
