@@ -1,0 +1,19 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <circle cx="50" cy="50" r="45" fill="#dc2626"/>
+
+  <!-- Letter J -->
+  <path d="M38 25v35c0 10-6 15-15 15-8 0-14-4-16-12" 
+        fill="none" 
+        stroke="white" 
+        stroke-width="7" 
+        stroke-linecap="round"/>
+
+  <!-- Letter P -->
+  <path d="M55 25v50M55 25h12c8 0 12 5 12 12s-4 12-12 12H55" 
+        fill="none" 
+        stroke="white" 
+        stroke-width="7" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+</svg>
