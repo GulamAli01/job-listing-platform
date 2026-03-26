@@ -80,7 +80,7 @@ const PostJob = () => {
 
             console.log("Payload:", payload);
 
-            const res = await axios.post(`${JOB_API_END_POINT}/post`, payload, {
+            const res = await axios.post(`https://job-listing-platform-qr2v.onrender.com/api/v1/job/post`, payload, {
                 headers: {
                     'Content-Type': 'application/json'
                 },

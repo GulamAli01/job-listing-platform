@@ -32,7 +32,7 @@ const Login = () => {
 
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/login`, input,
+      const res = await axios.post(`https://job-listing-platform-qr2v.onrender.com/api/v1/user/login`, input,
         {
           headers: {
             "content-type": "application/json"
