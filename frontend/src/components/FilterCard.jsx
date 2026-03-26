@@ -22,36 +22,49 @@ const fitlerData = [
 const FilterCard = () => {
     const [selectedValue, setSelectedValue] = useState('');
     const dispatch = useDispatch();
+
     const changeHandler = (value) => {
         setSelectedValue(value);
     }
+
     useEffect(() => {
         dispatch(setSearchQuery(selectedValue));
     }, [selectedValue]);
+
     return (
-        <div className='w-full bg-white p-3 rounded-md'>
-            <h1 className='font-bold text-lg'>Filter Jobs</h1>
-            <hr className='mt-3' />
+        <div className='w-full bg-white p-4 rounded-lg shadow-sm border border-gray-200'>
+
+            <h1 className='font-bold text-base md:text-lg'>Filter Jobs</h1>
+            <hr className='my-3' />
+
             <RadioGroup value={selectedValue} onValueChange={changeHandler}>
                 {
                     fitlerData.map((data, index) => (
-                        <div key={index}>
-                            <h1 className='font-bold text-lg'>{data.fitlerType}</h1>
+                        <div key={index} className='mb-4'>
+                            
+                            <h2 className='font-semibold text-sm md:text-base mb-2'>
+                                {data.fitlerType}
+                            </h2>
+
                             {
                                 data.array.map((item, idx) => {
                                     const itemId = `id${index}-${idx}`
                                     return (
-                                        <div key={itemId} className='flex items-center space-x-2 my-2'>
+                                        <div key={itemId} className='flex items-center gap-2 my-1'>
                                             <RadioGroupItem value={item} id={itemId} />
-                                            <Label htmlFor={itemId}>{item}</Label>
+                                            <Label htmlFor={itemId} className='text-sm md:text-base'>
+                                                {item}
+                                            </Label>
                                         </div>
                                     )
                                 })
                             }
+
                         </div>
                     ))
                 }
             </RadioGroup>
+
         </div>
     )
 }

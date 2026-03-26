@@ -9,25 +9,31 @@ const Browse = () => {
   useGetAllJobs();
   const { allJobs } = useSelector(store => store.job);
   const dispatch = useDispatch()
+
   useEffect(() => {
     return () => {
       dispatch(setSearchQuery(""));
     }
-  })
+  }, [dispatch])
+
   return (
     <div>
       <Navbar />
-      <div className='max-w-7xl mx-24 my-10'>
-        <h1 className='font-bold text-xl my-10'>Search Jobs ({allJobs.length})</h1>
-        <div className='grid grid-cols-3 gap-4'>
+
+      <div className='max-w-7xl mx-auto px-4 md:px-10 my-6'>
+
+        <h1 className='font-bold text-lg md:text-xl my-6'>
+          Search Jobs ({allJobs.length})
+        </h1>
+
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
           {
-            allJobs.map((job) => {
-              return (
-                <Job key={job._id} job={job} />
-              )
-            })
+            allJobs.map((job) => (
+              <Job key={job._id} job={job} />
+            ))
           }
         </div>
+
       </div>
     </div>
   )
